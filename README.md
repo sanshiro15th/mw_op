@@ -4,6 +4,7 @@ MW-OP (https://mw-op.herokuapp.com)
 
 #### 1-1 コンセプト
 - 運用チームと開発チームのスムーズな連携により一つ一つの問題を解決する支援をする。
+
 #### 1-2 利用者
 - 運用チーム
 
@@ -26,22 +27,31 @@ MW-OP (https://mw-op.herokuapp.com)
 ##3, UI設計
 ◯管理画面UI(1枚)
 
-◯ユーザー側UI(3枚)
-- 故障情報登録ページ
-- 故障原因一覧ページ
+◯ユーザー側UI(8枚)
+- 故障報告登録ページ
+- 故障報告詳細ページ
+- 故障報告一覧ページ
 - 故障原因登録ページ
+- 故障原因詳細ページ
+- 故障原因一覧ページ
+- ユーザ登録ページ
+- ユーザ一覧ページ
+
 
 ■バックエンド機能
 機能部分
 
-故障案件関連
-- 故障案件一覧表示機能(3日)
-- 故障案件一覧表示機能(3日)
-- 故障案件登録機能(3日)
+故障報告関連
+- 故障報告一覧表示機能(3日)
+- 故障報告一覧表示機能(3日)
+- 故障報告登録機能(3日)
 - コメント登録機能(3日)
+- 故障原因紐づけ機能(3日)
+
 故障原因調査関連
 - 故障原因登録機能(3日)
 - 故障原因一覧表示機能(3日)
+- 故障報告紐づけ機能(3日)
 管理機能
 - ユーザ登録, 編集, 削除
 ログイン機能
@@ -61,7 +71,8 @@ MW-OP (https://mw-op.herokuapp.com)
 
 - 関連
   - `has_many :troubles`
-  - `has_many :comments`
+  - `has_many :isscomments`
+  - `has_many :acccomments`
 
 
 ### Troubles
@@ -80,16 +91,17 @@ MW-OP (https://mw-op.herokuapp.com)
 
 - 関連
   - `belongs_to :user`
-  - `has_many :comments`
+  - `has_many :isscomments`
   - `belongs_to :account`
   - `has_many :relations`
 
-### CommentsForIssue
+### IssComments
 
 | column | 説明 | type | default | null | 備考 |
 |---|---|---|---|---|---|
 | `user_id` | 紐づくUserのid | references | | false | |
 | `issue_id` | 紐づくIssueのid | references | | false | |
+| `comment` | コメント | text | | false | |
 
 - 関連
   - `belongs_to :user`
@@ -108,16 +120,17 @@ MW-OP (https://mw-op.herokuapp.com)
 - 関連
   - `belongs_to :user`
   - `belongs_to :trouble`
-  - `has_many :comments`
+  - `has_many :acccomments`
   - `has_many :relations`
 
 
-### CommentsForAccount
+### AccComments
 
 | column | 説明 | type | default | null | 備考 |
 |---|---|---|---|---|---|
 | `user_id` | 紐づくUserのid | references | | false | |
 | `account_id` | 紐づくAccountのid | references | | false | |
+| `comment` | コメント | text | | false | |
 
 - 関連
   - `belongs_to :user`
