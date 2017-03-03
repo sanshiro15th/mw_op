@@ -1,24 +1,17 @@
 # 仕様書
 ## 1, サービス名
-TECH::SHARE (http://52.199.29.59/)
-
-[test用アカウント]
-email: qwerty@gmail.com
-pass: qwerty
-
-[![https://gyazo.com/653f5616f15d810d5a27e1dd3209061d](https://i.gyazo.com/653f5616f15d810d5a27e1dd3209061d.png)](https://gyazo.com/653f5616f15d810d5a27e1dd3209061d)
+MW-OP (https://mw-op.herokuapp.com)
 
 #### 1-1 コンセプト
-- TECH::CAMPのインターン生200名が日々学んだことや参考にしているサイトを投稿し、他のメンターが日々何を見ているのかを視覚化し、意見場を設ける
-
-#### 1-2 ターゲットユーザー
-- TECH::CAMPのメンター200名
+- 運用チームと開発チームのスムーズな連携により一つ一つの問題を解決する支援をする。
+#### 1-2 利用者
+- 運用チーム
 
 #### 1-3 解決する問題
-- 技術力向上と、参考記事のシェアによるコミュニケーションを双方向化
+- サービス運用で必要となる故障報告と故障状況の追跡を可能にする
 
 #### 1-5 見本サイト
-- https://newspicks.com/
+- https://＊＊＊＊.com/
 
 ## 2, 見積り工数
 - 期間
@@ -26,66 +19,114 @@ pass: qwerty
 | 実装箇所 | 期間 |
 |---|---|
 | `フロントエンド` |5日|
-| `バックエンド` |14日|
-| `サーバーデプロイ` |4日|
+| `バックエンド` |1３日|
+| `サーバーデプロイ` |４日|
 | `フロントエンドとバックエンドのつなぎ` |4日|
 
 ##3, UI設計
 ◯管理画面UI(1枚)
 
 ◯ユーザー側UI(3枚)
-- news詳細
-- news登録ページ
+- 故障情報登録ページ
+- 故障原因一覧ページ
+- 故障原因登録ページ
 
 ■バックエンド機能
 機能部分
-ユーザー関連(10日)
-- 登録, 編集, 削除
-- 新規登録・ログイン機能(1日)
-- news登録機能(3日)
-- 管理画面(3日)
+
+故障案件関連
+- 故障案件一覧表示機能(3日)
+- 故障案件一覧表示機能(3日)
+- 故障案件登録機能(3日)
+- コメント登録機能(3日)
+故障原因調査関連
+- 故障原因登録機能(3日)
+- 故障原因一覧表示機能(3日)
+管理機能
+- ユーザ登録, 編集, 削除
+ログイン機能
+- ログイン機能(1日)
 
 ## テーブル設計
+
 ### Users
 
 |column|説明|type|default|null|備考|
 |---|---|---|---|---|---|
-| `nickname` | ニックネーム | string |  | false | |
-| `avatar` | アバター | string | | false | Carrierwaveを利用|
-
-### Letters
-| column | 説明 | type | default | null | 備考 |
-|---|---|---|---|---|---|
-| `title` | 記事のタイトル | string | | false | |
-| `image` | 記事のイメージ | string | | false | |
-| `url` | 記事のURL | string | | false | |
-| `site_name` | サイトの名前 | string | | false | |
-| `comments_count` | コメントの数 | integer | | false | |
+| `email` | メールアドレス | string | | false | |
+| `password` | パスワード | string | | false | |
+| `firstname` | 名 | string |  | false | |
+| `familyname` | 性 | string |  | false | |
+| `depertment` | 所属部署 | string | | false | |
 
 - 関連
+  - `has_many :troubles`
   - `has_many :comments`
 
-### Comments
+
+### Troubles
 
 | column | 説明 | type | default | null | 備考 |
 |---|---|---|---|---|---|
-| `content` | コメントのコンテンツ | string | | false | |
-| `user_id` | 紐づくUserのid | references | | false | |
-| `letter_id` | 紐づくLetterのid | references | | false | |
-| `likes_count` | 紐づくArticleのid | references | | false | |
+| `start_date` | 発生日 | date | | false | |
+| `start_time` | 発生時刻 | time | | false | |
+| `end_date` | 回復日 | date | | false | |
+| `end_time` | 回復時刻 | time | | false | |
+| `vm` | 対象VM | string | | false | |
+| `affected_user` | 影響ユーザ数 | integer | | false | |
+| `about` | 故障内容 | string | | false | |
+| `user_id` | 担当者 | refference | | false | |
+| `account_id` | 原因 | refference | | false | |
 
 - 関連
   - `belongs_to :user`
-  - `belongs_to :letter, counter_cache: true`
-  - `has_many :likes, dependent: :destroy`
+  - `has_many :comments`
+  - `belongs_to :account`
+  - `has_many :relations`
 
-### Likes
+### CommentsForIssue
 
 | column | 説明 | type | default | null | 備考 |
 |---|---|---|---|---|---|
 | `user_id` | 紐づくUserのid | references | | false | |
-| `comment_id` | 紐づくCommentのid | references | | false | |
+| `issue_id` | 紐づくIssueのid | references | | false | |
 
 - 関連
   - `belongs_to :user`
-  - `belongs_to :comment`
+  - `belongs_to :issue`
+
+
+### Accounts
+
+| column | 説明 | type | default | null | 備考 |
+|---|---|---|---|---|---|
+| `title` | タイトル | string | | false | |
+| `user_id` | 紐づくUserのid | references | | false | |
+| `status` | 状態フラグ | string | | false | |
+
+
+- 関連
+  - `belongs_to :user`
+  - `belongs_to :trouble`
+  - `has_many :comments`
+  - `has_many :relations`
+
+
+### CommentsForAccount
+
+| column | 説明 | type | default | null | 備考 |
+|---|---|---|---|---|---|
+| `user_id` | 紐づくUserのid | references | | false | |
+| `account_id` | 紐づくAccountのid | references | | false | |
+
+- 関連
+  - `belongs_to :user`
+  - `belongs_to :Account`
+
+### Relations
+
+| column | 説明 | type | default | null | 備考 |
+|---|---|---|---|---|---|
+| `trouble_id` | 紐づくTroubleのid | references | | false | |
+| `issue_id` | 紐づくIssueのid | references | | false | |
+
