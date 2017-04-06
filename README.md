@@ -30,33 +30,37 @@ MW-OP (https://mw-op.herokuapp.com)
 - ユーザ一覧ページ
 
 ◯ユーザー側UI(6枚)
-- 故障報告登録ページ
-- 故障報告詳細ページ
-- 故障報告一覧ページ
-- 故障原因登録ページ
-- 故障原因詳細ページ
-- 故障原因一覧ページ
+- 報告登録画面
+- 報告詳細画面
+- 報告一覧画面
+- 分析登録画面
+- 分析詳細画面
+- 分析一覧画面
 
 
 ■バックエンド機能
 機能部分
 
-故障報告関連
-- 故障報告一覧表示機能(3日)
-- 故障報告一覧表示機能(3日)
-- 故障報告登録機能(3日)
+報告関連
+- 一覧表示機能(3日)
+- 詳細表示機能(3日)
+- 報告登録機能(3日)
 - コメント登録機能(3日)
-- 故障原因紐づけ機能(3日)
+- 報告紐づけ機能(3日)
 
-故障原因調査関連
-- 故障原因登録機能(3日)
-- 故障原因一覧表示機能(3日)
-- 故障報告紐づけ機能(3日)
+分析調査関連
+- 分析登録機能(3日)
+- 分析一覧表示機能(3日)
+- 分析紐づけ機能(3日)
 
 ユーザ管理関連
-- ユーザ登録, 編集, 削除
+- ユーザ登録
+- ユーザ編集
+- ユーザ削除
+
 ログイン機能
 - ログイン機能(1日)
+
 
 ## テーブル設計
 
@@ -71,19 +75,20 @@ MW-OP (https://mw-op.herokuapp.com)
 | `depertment` | 所属部署 | string | | false | |
 
 - 関連
-  - `has_many :troubles`
-  - `has_many :isscomments`
-  - `has_many :acccomments`
+  - `has_many :reports`
+  - `has_many :analysis`
+  - `has_many :rep_comments`
+  - `has_many :ana_comments`
 
 
-### Troubles
+### Reports
 
 | column | 説明 | type | default | null | 備考 |
 |---|---|---|---|---|---|
-| `start_date` | 発生日 | date | | false | |
-| `start_time` | 発生時刻 | time | | false | |
-| `end_date` | 回復日 | date | | false | |
-| `end_time` | 回復時刻 | time | | false | |
+| `start_date` | 事象発生日 | date | | false | |
+| `start_time` | 事象発生時刻 | time | | false | |
+| `end_date` | 事象回復日 | date | | false | |
+| `end_time` | 事象回復時刻 | time | | false | |
 | `vm` | 対象VM | string | | false | |
 | `affected_user` | 影響ユーザ数 | integer | | false | |
 | `about` | 故障内容 | string | | false | |
@@ -92,11 +97,11 @@ MW-OP (https://mw-op.herokuapp.com)
 
 - 関連
   - `belongs_to :user`
-  - `has_many :isscomments`
+  - `has_many :rep_comments`
   - `belongs_to :account`
   - `has_many :relations`
 
-### IssComments
+### Rep_Comments
 
 | column | 説明 | type | default | null | 備考 |
 |---|---|---|---|---|---|
@@ -109,7 +114,7 @@ MW-OP (https://mw-op.herokuapp.com)
   - `belongs_to :issue`
 
 
-### Accounts
+### Analysis
 
 | column | 説明 | type | default | null | 備考 |
 |---|---|---|---|---|---|
@@ -120,27 +125,27 @@ MW-OP (https://mw-op.herokuapp.com)
 
 - 関連
   - `belongs_to :user`
-  - `belongs_to :trouble`
-  - `has_many :acccomments`
+  - `belongs_to :report`
+  - `has_many :ana_comments`
   - `has_many :relations`
 
 
-### AccComments
+### Ana_Comments
 
 | column | 説明 | type | default | null | 備考 |
 |---|---|---|---|---|---|
 | `user_id` | 紐づくUserのid | references | | false | |
-| `account_id` | 紐づくAccountのid | references | | false | |
+| `analysis_id` | 紐づくAnalysisのid | references | | false | |
 | `comment` | コメント | text | | false | |
 
 - 関連
   - `belongs_to :user`
-  - `belongs_to :Account`
+  - `belongs_to :analysis`
 
 ### Relations
 
 | column | 説明 | type | default | null | 備考 |
 |---|---|---|---|---|---|
-| `trouble_id` | 紐づくTroubleのid | references | | false | |
-| `issue_id` | 紐づくIssueのid | references | | false | |
+| `report_id` | 紐づくReportのid | references | | false | |
+| `analysis_id` | 紐づくAnalysisのid | references | | false | |
 
