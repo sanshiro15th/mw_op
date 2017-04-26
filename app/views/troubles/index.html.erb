@@ -1,0 +1,25 @@
+<div class='row'>
+  <article class="section">
+    <div class="container">
+      <header class="header header--section">
+        <h2 class="text-middle">
+          <i class="icon-movie color-gray-light"></i>トラブル情報
+        </h2>
+        <a href="/troubles/new">故障登録</a>
+      </header>
+      <ul class="" id="">
+        <% @troubles.each do |trouble| %>
+          <li class="">
+            <div class="">
+              <a href="/troubles/<%= trouble.id %>">
+              <h3 class="" title="<%= trouble.id %>">
+                <span><i class="icon-rate-60 text-xxsmall opacity-60" title=""></i></span>トラブル<%= trouble.id %></h3>
+            </a>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+      <%= paginate(@troubles) %>
+    </div>
+  </article>
+</div>
