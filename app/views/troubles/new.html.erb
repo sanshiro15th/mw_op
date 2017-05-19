@@ -11,7 +11,15 @@
       <div style="margin: 8px 0">
         <%= f.label :影響ユーザ数, style: { 'margin-right' => 8 } %>
         <%= f.number_field :user_num, placeholder: '影響ユーザ数', value: 1, max: 150, min: 0, html: { class: "search__query", style: 'text-align: right;' } %>
-        <%= f.text_area :vm_name, placeholder: 'VM名', style: 'width: 100%' %>
+        <%= f.text_area :vm_name, placeholder: '対象機器', style: 'width: 100%' %>
+      </div>
+      <div>
+        <p>発生日時</p>
+        <%= f.datetime_select :trbl_start, class: "form-control", :use_month_numbers => true, :use_two_digit_numbers => true %>
+      </div>
+      <div>
+        <p>回復日時：</p>
+        <%= f.datetime_select :trbl_end, class: "form-control", :use_month_numbers => true, :use_two_digit_numbers => true %>
       </div>
       <div style="margin: 8px 0">
         <%= f.text_area :about, placeholder: '概要', style: 'width: 100%;height: 300px;' %>

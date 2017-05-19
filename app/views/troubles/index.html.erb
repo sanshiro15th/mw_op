@@ -1,25 +1,46 @@
 <div class='row'>
   <article class="section">
-    <div class="container">
-      <header class="header header--section">
-        <h2 class="text-middle">
-          <i class="icon-movie color-gray-light"></i>トラブル情報
-        </h2>
-        <a href="/troubles/new">故障登録</a>
-      </header>
-      <ul class="" id="">
-        <% @troubles.each do |trouble| %>
-          <li class="">
-            <div class="">
-              <a href="/troubles/<%= trouble.id %>">
-              <h3 class="" title="<%= trouble.id %>">
-                <span><i class="icon-rate-60 text-xxsmall opacity-60" title=""></i></span>トラブル<%= trouble.id %></h3>
-            </a>
-            </div>
-          </li>
-        <% end %>
-      </ul>
-      <%= paginate(@troubles) %>
+  <div class="row">
+    <div class="col-md-8">
+      <h4>故障情報</h4>
     </div>
+    <div class="col-md-2 pull-right">
+      <a href="/troubles/new" class="btn btn-primary">新規登録</a>
+    </div>
+    <table class="table table-hover" id="">
+      <thead>
+        <tr><th></th><th>管理番号</th><th>発生日時</th><th>回復日時</th><th>概要</th><th>対象機器</th><th>影響ユーザ数</th></tr>
+      </thead>
+        <% @troubles.each do |trouble| %>
+          <tr>
+            <td class="">
+              <a href="/troubles/<%= trouble.id %>" class="btn btn-info btn-sm" role="button">詳細</a>
+              <a href="/troubles/<%= trouble.id %>/edit" class="btn btn-default btn-sm" role="button">修正</a>
+            </td>
+            <td>
+                <p class="" title="<%= trouble.id %>">
+                <span><i class="icon-rate-60 text-xxsmall opacity-60" title=""></i></span><%= trouble.id %>
+                </p>
+            </td>
+            <td>
+              <span><i class="icon-rate-60 text-xxsmall opacity-60" title=""></i></span><%= trouble.trbl_start.to_s(:default) %>
+            </td>
+            <td>
+              <span><i class="icon-rate-60 text-xxsmall opacity-60" title=""></i></span><%= trouble.trbl_end.to_s(:default) %>
+            </td>
+            <td>
+              <span><i class="icon-rate-60 text-xxsmall opacity-60" title=""></i></span><%= trouble.about %>
+            </td>
+            <td>
+              <span><i class="icon-rate-60 text-xxsmall opacity-60" title=""></i></span><%= trouble.vm_name %>
+            </td>
+            <td>
+              <span><i class="icon-rate-60 text-xxsmall opacity-60" title=""></i></span><%= trouble.user_num %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= paginate(@troubles) %>
   </article>
 </div>

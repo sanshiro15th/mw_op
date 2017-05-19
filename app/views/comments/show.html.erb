@@ -1,0 +1,31 @@
+<div class="row">
+  <article class="section">
+    <h2>コメント</h2>
+    <div class="">
+      <a href="/troubles/<%= @comment.trouble_id %>" class="btn btn-info"> 故障情報</a>
+      <a href="/comments/<%= @comment.id %>/edit" class="btn btn-default"> 編集する</a>
+    </div>
+    <br><br>
+    <div>
+      <table class="table table-bordered">
+        <thead>
+        <tr>
+          <td>
+            ユーザ<%= @comment.user_id %>
+          </td>
+          <td>
+            投稿日時：<%= @comment.created_at.to_s(:default) %> ( 最終更新日時：<%= @comment.updated_at.to_s(:default) %> )
+          </td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="2">
+              <%= @comment.comment %>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </article>
+</div>

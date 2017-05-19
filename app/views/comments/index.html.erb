@@ -1,0 +1,166 @@
+<%= Gon::Base.render_data({}) %>
+<div class='row'>
+  <div class="col-md-10">
+    <h4>故障件数</h4>
+  </div>
+</div>
+<div class='row'>
+  <div class="col-md-3">
+    <table class="table table-bordered" style="text-align:center">
+      <thead>
+        <tr class="active"><td>集計期間</td><td>累計件数</td><td>増減数</td></tr>
+      </thead>
+      <tbody>
+        <tr><td>日</td><td><%= @ttoday %>件</td><td><%= @diff_troubles_day %>件</td></tr>
+        <tr><td>週</td><td><%= @tthisweek %>件</td><td><%= @diff_troubles_week %>件</td></tr>
+        <tr><td>月</td><td><%= @tthismonth %>件</td><td><%= @diff_troubles_month %>件</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-md-5" style="padding:10px" >
+    <div id="chart1"></div>
+  </div>
+  <div class="col-md-3" style="padding:10px" >
+    <div id="chart2"></div>
+  </div>
+</div>
+<script>
+console.log("----------------------")
+console.log(gon.date);
+console.log(gon.date[0]);
+console.log(gon.date[1]);
+console.log(gon.date[2]);
+console.log(gon.date[3]);
+console.log(gon.date[4]);
+console.log(gon.date[5]);
+console.log(gon.date[6]);
+console.log("----------------------")
+
+
+for (var i=0 ; i<7 ; i++){
+  if(!gon.tdata_day[gon.date[i]]){
+    gon.tdata_day[gon.date[i]] = 0;
+  }
+  if(!gon.cdata_day[gon.date[i]]){
+    gon.cdata_day[gon.date[i]] = 0;
+  }
+}
+console.log(gon.tdata_day[gon.date[0]]);
+console.log(gon.tdata_day[gon.date[1]]);
+console.log(gon.tdata_day[gon.date[2]]);
+console.log(gon.tdata_day[gon.date[3]]);
+console.log(gon.tdata_day[gon.date[4]]);
+console.log(gon.tdata_day[gon.date[5]]);
+console.log(gon.tdata_day[gon.date[6]]);
+console.log("----------------------")
+console.log(gon.cdata_day[gon.date[0]]);
+console.log(gon.cdata_day[gon.date[1]]);
+console.log(gon.cdata_day[gon.date[2]]);
+console.log(gon.cdata_day[gon.date[3]]);
+console.log(gon.cdata_day[gon.date[4]]);
+console.log(gon.cdata_day[gon.date[5]]);
+console.log(gon.cdata_day[gon.date[6]]);
+
+var chart1 = c3.generate({
+  bindto: '#chart1',
+    padding: {
+        top: 10,
+        right: 30,
+        bottom: 10,
+        left: 30,
+      },
+  data: {
+    x: 'x',
+        xFormat: '%Y-%m-%d', // 'xFormat' can be used as custom format of 'x'
+    columns: [
+      ['x', gon.date[6], gon.date[5], gon.date[4], gon.date[3], gon.date[2], gon.date[1], gon.date[0]],
+      // ['x', gon.date[5], gon.date[4], gon.date[3], gon.date[2], gon.date[1], gon.date[0] ],
+      ['故障件数', gon.tdata_day[gon.date[6]], gon.tdata_day[gon.date[5]], gon.tdata_day[gon.date[4]], gon.tdata_day[gon.date[3]], gon.tdata_day[gon.date[2]], gon.tdata_day[gon.date[1]], gon.tdata_day[gon.date[0]], ],
+      ['コメント数', gon.cdata_day[gon.date[6]], gon.cdata_day[gon.date[5]], gon.cdata_day[gon.date[4]], gon.cdata_day[gon.date[3]], gon.cdata_day[gon.date[2]], gon.cdata_day[gon.date[1]], gon.cdata_day[gon.date[0]], ]
+    ]
+  },
+   axis: {
+        x: {
+            type: 'timeseries',
+            tick: {
+                // rotate: 45,
+                format: '%d日'
+            }
+        }
+    },
+  size: {
+    height:200
+  }
+});
+
+var chart2 = c3.generate({
+  bindto: '#chart2',
+  padding: {
+        top: 10,
+        right: 10,
+        bottom: 10,
+        left: 10,
+      },
+    data: {
+        // iris data from R
+        columns: [
+            ['30分以内', 92],
+            ['30−60分', 07],
+            ['60分以上', 01],
+        ],
+        type: 'pie'
+    },
+    size:{
+      height:200
+    }
+});
+
+</script>
+
+<br><br>
+<div class="row">
+  <div class="col-md-10">
+    <h4>新着コメント</h4>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table" id="">
+      <thead>
+        <tr><th class="col-md-2"></th><th class="col-md-1">故障ID</th><th class="col-md-1">ユーザ名</th><th class="col-md-4">コメント</th><th class="col-md-2">投稿日時</th><th class="col-md-2">更新日時</th></tr>
+      </thead>
+        <% @comments.each do |comment| %>
+          <tr>
+            <td class="">
+              <a href="/comments/<%= comment.id %>" class="btn btn-info btn-sm" role="button">詳細</a>
+              <a href="/troubles/<%= comment.trouble_id %>" class="btn btn-info btn-sm" role="button">故障内容</a>
+            </td>
+           <td>
+              <span><i class="icon-rate-60 text-xxsmall opacity-60" title=""></i></span><%= comment.trouble_id %>
+            </td>
+            <td>
+                <p class="" title="<%= comment.user_id %>">
+                <span><i class="icon-rate-60 text-xxsmall opacity-60" title=""></i></span><%= comment.user_id %>
+                </p>
+            </td>
+            <td>
+              <span><i class="icon-rate-60 text-xxsmall opacity-60" title=""></i></span>
+              <% if comment.comment.length > 15 then  %>
+                <%= comment.comment.slice(0..15) %>...
+              <% else %>
+                <%= comment.comment %>
+              <% end %>
+            </td>
+            <td>
+              <span><i class="icon-rate-60 text-xxsmall opacity-60" title=""></i></span><%= comment.created_at.to_s(:default) %>
+            </td>
+            <td>
+              <span><i class="icon-rate-60 text-xxsmall opacity-60" title=""></i></span><%= comment.updated_at.to_s(:default) %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <%= paginate(@comments) %>
+  </div>
+</div>

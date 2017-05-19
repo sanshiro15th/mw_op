@@ -1,0 +1,26 @@
+<div class="row">
+  <article class="section">
+    <div>
+      <h2>コメント</h2>
+    </div>
+    <br><br>
+    <div>
+      <%= form_for @comment do |f| %>
+      <div>
+        ユーザ<%= @comment.user_id %>
+      </div>
+      <div>
+        投稿日時：<%= @comment.created_at.to_s(:default) %> ( 最終更新日時：<%= @comment.updated_at.to_s(:default) %> )
+      </div>
+      <div>
+        <%= f.text_area :comment, placeholder: @comment.comment, style: 'width: 100%;height: 300px;' %>
+      </div>
+      <div class="">
+        <%= button_tag type: "submit", class: "btn btn-primary" do %>
+          更新する<i class="icon-arrow-right"></i><% end %>
+        <a href="/comments/<%= @comment.id %>" class="btn btn-default" role="button">キャンセル</a>
+      </div>
+      <% end %>
+    </div>
+  </article>
+</div>

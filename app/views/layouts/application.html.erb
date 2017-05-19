@@ -4,6 +4,12 @@
   <title>MwOp</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+
+  <%= javascript_include_tag 'd3.v3.min.js' %>
+  <%= stylesheet_link_tag    'c3' %>
+  <%= javascript_include_tag 'c3.min' %>
+  <%= javascript_include_tag 'c3charts' %>
+
   <%= csrf_meta_tags %>
 </head>
 <body>
@@ -11,12 +17,6 @@
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container-fluid">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarEexample">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
           <a class="navbar-brand" href="/">サービストラブル情報</a>
         </div>
         <div class="collapse navbar-collapse" id="navbarEexample">
@@ -24,6 +24,13 @@
             <li><a href="/troubles">故障</a></li>
             <li><a href="/investments">調査</a></li>
             <li><a href="#">その他</a></li>
+            <li class="dropdown pull-right">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">アカウント <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#">アカウント設定</a></li>
+                <li><a href="#">サインアウト</a></li>
+              </ul>
+            </li>
           </ul>
         </div>
       </div>
